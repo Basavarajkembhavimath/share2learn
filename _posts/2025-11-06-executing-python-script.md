@@ -28,6 +28,8 @@ To execute this Python script on a Unix like shell ( on Mac OS, Ubuntu or other 
 
 Note: The above command assumes that "apples.py" file is present in the current folder where you are running this command
 
+## Directly executing Python script as a command
+
 On Linux ( and other Unix like systems ) there is another way to execute such scripts. We need to give execute permissions to this script and also somehow tell Bash shell to use "python" interpreter to execute this script. 
 
 The second part is done using a "Shebang" statement that is written on the first line starting from the first column of the script as show below:
@@ -50,9 +52,11 @@ The Shebang line contains the path of the interpreter to be used to execute this
  $
 ```
 
-# Virtual Environments
+## Virtual Environments
 
-So, what if we need to execute this script using the python interpreter in the currently active virtual environment ?
+What if I share this script with a friend who has python3 present in some other location ? May be in /usr/share/bin/python3 ?
+
+Or, what if we need to execute this script using the python interpreter in the currently active virtual environment ?
 
 Using the above Shebang would make the shell always use the Python interpreter mentioned in the Shebang, viz., /usr/bin/python3
 
@@ -68,3 +72,5 @@ print(fruit * count)
 ```
 
 Here, the env command picks the python3 binary available in the existing Shell environment. This makes the script portable and can now be executed on any system or any virtual environment without worrying about the correct path for python3.
+
+# What about using with the modern "uv" tool ?
