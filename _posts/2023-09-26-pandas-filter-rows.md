@@ -2,7 +2,7 @@
 title: "Pandas: Filter Rows based on cell values"
 date: 2023-09-26
 author: Sarfraaz Ahmed
-category: Tutorials
+category: Tutorial
 ---
 
 One of the coolest tricks in Python when you want to search multiple conditions
