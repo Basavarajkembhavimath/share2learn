@@ -73,4 +73,47 @@ print(fruit * count)
 
 Here, the env command picks the python3 binary available in the existing Shell environment. This makes the script portable and can now be executed on any system or any virtual environment without worrying about the correct path for python3.
 
-# What about using with the modern "uv" tool ?
+# What about using this with the modern "uv" tool ?
+
+The problem with running a Python script on any (client or customer) machine is that they need to have Python installed. And that too the correct version that the script expects ( based on the features that are used in it ). Apart from this, there is also the problem of dependencies. The system where we are planning to execute our Python script needs to have all the dependent modules installed. And they also need to be of the correct versions.
+
+"uv" tries to solve this by adding some inline metadata to the script that mentions the dependencies for the script. This is in accordance with PEP 723 where this support in Python scripts was introduced.
+
+Let's assume that "apples.py" script depends on "requests" module. To mention this dependency in the inline metadata, we need to execute the following "uv" command:
+
+```bash
+ $ uv add --script apples.py 'requests'
+```
+
+This modifies the "apples.py" script with the inline metadata added at the start of the script as shown below :
+
+```python
+# /// script                    # <--- inline metadata starts here
+# requires-python = ">=3.12"
+# dependencies = [
+#     "requests",
+# ]
+# ///                           # <--- inline meatadata ends here
+
+count = 5
+fruit = "\N{RED APPLE}"
+print(fruit * count)
+```
+
+And we can now use this "uv" command to execute "apples.py"
+
+```bash
+ $ uv run apples.py
+ Installed 5 packages in 13ms
+ 🍎🍎🍎🍎🍎
+```
+
+The above command takes care of installing the correct version of Python and the dependent modules in a temporary location on the customer's sytem and then execute the Python commands in that script
+
+If we do not want to display the message about installing packages, then we can use the "--quiet" switch as shown below:
+
+```bash
+ $ uv run --quiet apples.py
+ 🍎🍎🍎🍎🍎
+```
+
