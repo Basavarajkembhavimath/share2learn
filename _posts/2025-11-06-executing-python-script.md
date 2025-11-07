@@ -20,14 +20,14 @@ The expected output of this simple Python script "apples.py" is
 ```
 
 To execute this Python script on a Unix like shell ( on Mac OS, Ubuntu or
-other Linux like systems ) one can use this command
+other Linux like systems ) one can use this command:
 
 ```bash
- $ python apples.py
+ $ python3 apples.py
    🍎🍎🍎🍎🍎
 ```
 
-Note: The above command assumes that "apples.py" file is present in the
+**Note:** The above command assumes that "apples.py" file is present in the
 current folder where you are running this command. Otherwise, we would 
 have to specify either its absolute or relative path instead.
 
@@ -38,7 +38,7 @@ such scripts. We need to give execute permissions to this script and also
 somehow tell Bash shell to use "python" interpreter to execute this script.
 
 The second part is done using a "Shebang" statement that is written on the
-first line starting from the first column of the script as show below:
+first line of the script starting from the first column as show below:
 
 ```python
 #!/usr/bin/python3  # <-- This line is called the "Shebang" line
@@ -47,8 +47,8 @@ fruit = "\N{RED APPLE}"
 print(fruit * count)
 ```
 
-Note: The word "Shebang" is a combination of "sharp" for "#" ( mostly 
-coming from the Music notation ) and "bang" ( short for hash bang ), the 
+**Note:** The word "Shebang" is a combination of "sharp" for "#" ( mostly 
+coming from the Music notation ) and "bang" ( short for hash bang, the 
 name for !). But, there is no evident proof for this though, apart from 
 Wikipedia.
 
@@ -57,8 +57,8 @@ this script. After adding the Shebang we need to give execute permissions
 to the script and directly execute it as shown below:
 
 ```bash
- $ chmod u+x apples.py
- $ ./apples.py 
+ $ chmod u+x apples.py  # <--- Giving execute permissions to the script
+ $ ./apples.py          # <--- Executing the script using it's relative path
    🍎🍎🍎🍎🍎
  $
 ```
@@ -74,15 +74,16 @@ in the currently active virtual environment ?
 Using the above Shebang would make the shell always use the Python 
 interpreter mentioned in the Shebang, viz., /usr/bin/python3
 
-The trick comes from the old Bash script days of using "env" ( which is 
-sort of a hack that assumes env is mostly present at a specific location 
-in all systems. And this is usually true is most of the modern Unix like 
-systems )
+The trick comes from the old Bash script days of using "env" command to
+pick the correct command from the present environment variables / settings
+( which is sort of a hack that assumes env is mostly present at a specific 
+location in all systems. But, this is fine since "env" command is usually
+present in the same location on most of the modern Unix like systems )
 
 So, the new modified Shebang now looks like
 
 ```python
-#!/usr/bin/env python3  # <-- Ask env to pick python3 binary
+#!/usr/bin/env python3  # <-- Ask env to pick appropriate python3 binary
 count = 5
 fruit = "\N{RED APPLE}"
 print(fruit * count)
@@ -106,12 +107,12 @@ modules installed. And they also need to be of the correct versions.
 mentions the dependencies for the script. This is in accordance with PEP 723
 where this support in Python scripts was introduced.
 
-Let's assume that "apples.py" script depends on "requests" module. To 
+Let's assume that "apples.py" script depends on "numpy" module. To 
 mention this dependency in the inline metadata, we need to execute the 
 following "uv" command:
 
 ```bash
- $ uv add --script apples.py 'requests'
+ $ uv add --script apples.py 'numpy'
 ```
 
 This modifies the "apples.py" script with the inline metadata added at the
@@ -121,7 +122,7 @@ start of the script as shown below :
 # /// script                    # <--- inline metadata starts here
 # requires-python = ">=3.12"
 # dependencies = [
-#     "requests",
+#     "numpy",
 # ]
 # ///                           # <--- inline metadata ends here
 
@@ -134,7 +135,7 @@ And we can now use this "uv" command to execute "apples.py"
 
 ```bash
  $ uv run apples.py
-   Installed 5 packages in 13ms
+   Installed 1 package in 18ms
    🍎🍎🍎🍎🍎
 ```
 
@@ -147,15 +148,15 @@ we can use the "--quiet" switch as shown below:
 
 ```bash
  $ uv run --quiet apples.py
- 🍎🍎🍎🍎🍎
+   🍎🍎🍎🍎🍎
 ```
 
 ## Combining "uv" with "Shebang"
 
-Running the "uv" command as above lands us into the same problem or asking
-customers to run a command ( instead of just the script ) to trigger the
-execution of our script. We could solve it using the Shebang trick we saw
-earlier as mentioned [in this
+Running the "uv" command as above lands us into the same problem of asking
+customers to run a command ( instead of executing just the script ) to 
+trigger the execution of our script. We could solve it using the Shebang 
+trick we saw earlier as mentioned [in this
 post](https://akrabat.com/using-uv-as-your-shebang-line/)
 
 We can now use the following Shebang to directly launch this script 
@@ -166,7 +167,7 @@ using "uv" command:
 # /// script                        # <--- inline metadata starts here
 # requires-python = ">=3.12"
 # dependencies = [
-#     "requests",
+#     "numpy",
 # ]
 # ///                               # <--- inline meatadata ends here
 
@@ -183,20 +184,20 @@ using the "-S" switch now allows us to properly execute "uv" command with
 "run" and "--script" arguments passed on to the "uv" command as switches 
 to it.
 
-Note: This "-S" switch might behave differently on a a Mac system which uses
-BSD Unix. The Shebang works on a Mac OS irrespective of providing the
+**Note:** This "-S" switch might behave differently on a a Mac system which 
+uses BSD Unix. The Shebang works on a Mac OS irrespective of providing the
 "-S"switch.
 
 And we would execute the "apples.py" script as :
 
 ```bash
  $ ./apples.py
- Installed 5 packages in 13ms
- 🍎🍎🍎🍎🍎
+   Installed 1 package in 18ms
+   🍎🍎🍎🍎🍎
 ```
 
 And as we saw earlier, if we do not want to display the message about
-installing packages, then we could use the "--quiet" switch as shown below :
+installing packages, then we could use the "--quiet" switch as shown below:
 
 
 ```python
@@ -204,7 +205,7 @@ installing packages, then we could use the "--quiet" switch as shown below :
 # /// script                            # <--- inline metadata starts here
 # requires-python = ">=3.12"
 # dependencies = [
-#     "requests",
+#     "numpy",
 # ]
 # ///                                   # <--- inline meatadata ends here
 
@@ -217,7 +218,7 @@ And when we execute this script, we would get the output as:
 
 ```bash
  $ ./apples.py
- 🍎🍎🍎🍎🍎
+   🍎🍎🍎🍎🍎
 ```
 
 ## Conclusion
@@ -227,7 +228,7 @@ irrespetive of whether the customer has the correct Python version
 installed or not.
 
 But, this works only on Unix like machines. I am not sure how something like
-this can be done on non-Unux like machines.
+this can be done on non-Unix like machines.
 
 Ofcourse, the problem now moves from the customer having "python" 
 installed on their systems to them having "uv" installed on their system 
