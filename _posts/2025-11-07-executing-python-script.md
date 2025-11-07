@@ -1,6 +1,6 @@
 ---
 title: "Executing a Python script"
-date: 2025-11-06
+date: 2025-11-07
 author: Sarfraaz Ahmed
 category: Tutorial
 ---
